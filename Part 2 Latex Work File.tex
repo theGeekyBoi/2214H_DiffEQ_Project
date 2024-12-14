@@ -1,0 +1,1210 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, mathtools}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\begin{document}
+
+\title{Work for Final Project Part 2: Applications of Matrix Diagonalization}
+\author{Aaditya Sharma}
+\date{}
+\maketitle
+
+\section*{A 1.1: Solve \( \mathbf{y}'(t) = A\mathbf{y}(t) + \mathbf{g}(t) \) Using Variation of Parameters}
+
+We are solving the nonhomogeneous differential equation:
+\[
+\mathbf{y}'(t) = A\mathbf{y}(t) + \mathbf{g}(t),
+\]
+where
+\[
+A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}, \quad \mathbf{g}(t) = \begin{bmatrix} e^{2t} \\ 0 \end{bmatrix}.
+\]
+The solution involves two steps:
+\begin{enumerate}
+    \item Solve the homogeneous equation \( \mathbf{y}'(t) = A\mathbf{y}(t) \).
+    \item Use variation of parameters to find the particular solution.
+\end{enumerate}
+
+\subsection*{Step 1: Solve the Homogeneous Equation}
+The homogeneous equation is:
+\[
+\mathbf{y}'(t) = A\mathbf{y}(t).
+\]
+
+\subsubsection*{Eigenvalues of \(A\)}
+The eigenvalues satisfy \( \det(A - \lambda I) = 0 \):
+\[
+\det\begin{bmatrix} 1-\lambda & 2 \\ 2 & 1-\lambda \end{bmatrix} = (1-\lambda)^2 - 4 = \lambda^2 - 2\lambda - 3.
+\]
+Factoring gives:
+\[
+\lambda^2 - 2\lambda - 3 = (\lambda - 3)(\lambda + 1) = 0.
+\]
+Thus, the eigenvalues are \( \lambda_1 = 3 \) and \( \lambda_2 = -1 \).
+
+\subsubsection*{Eigenvectors of \(A\)}
+For \( \lambda_1 = 3 \):
+\[
+(A - 3I)\mathbf{v} = 0 \implies \begin{bmatrix} -2 & 2 \\ 2 & -2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0.
+\]
+From the first row:
+\[
+-2v_1 + 2v_2 = 0 \implies v_1 = v_2.
+\]
+Let \( v_1 = 1 \), then \( \mathbf{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \).
+
+For \( \lambda_2 = -1 \):
+\[
+(A + I)\mathbf{v} = 0 \implies \begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0.
+\]
+From the first row:
+\[
+2v_1 + 2v_2 = 0 \implies v_1 = -v_2.
+\]
+Let \( v_2 = 1 \), then \( \mathbf{v}_2 = \begin{bmatrix} -1 \\ 1 \end{bmatrix} \).
+
+\subsubsection*{General Solution to the Homogeneous Equation}
+The general solution is:
+\[
+\mathbf{y}_h(t) = c_1e^{3t}\begin{bmatrix} 1 \\ 1 \end{bmatrix} + c_2e^{-t}\begin{bmatrix} -1 \\ 1 \end{bmatrix}.
+\]
+
+\subsection*{Step 2: Solve for the Particular Solution}
+We use \textbf{variation of parameters}:
+\[
+\mathbf{y}_p(t) = V(t)\mathbf{u}(t),
+\]
+where \( V(t) \) is constructed from the homogeneous solutions:
+\[
+V(t) = \begin{bmatrix} e^{3t} & -e^{-t} \\ e^{3t} & e^{-t} \end{bmatrix}.
+\]
+
+\subsubsection*{Derivative of \(\mathbf{y}_p(t)\)}
+Differentiating:
+\[
+\mathbf{y}'_p(t) = V'(t)\mathbf{u}(t) + V(t)\mathbf{u}'(t).
+\]
+Substitute into \( \mathbf{y}'(t) = A\mathbf{y}(t) + \mathbf{g}(t) \):
+\[
+V'(t)\mathbf{u}(t) + V(t)\mathbf{u}'(t) = AV(t)\mathbf{u}(t) + \mathbf{g}(t).
+\]
+Since \( V'(t) = AV(t) \):
+\[
+V(t)\mathbf{u}'(t) = \mathbf{g}(t).
+\]
+
+\subsubsection*{Solve for \(\mathbf{u}(t)\)}
+Multiply by \( V^{-1}(t) \):
+\[
+\mathbf{u}'(t) = V^{-1}(t)\mathbf{g}(t).
+\]
+
+\paragraph{Compute \(V^{-1}(t)\):}
+The determinant of \(V(t)\) is:
+\[
+\det(V) = e^{3t}e^{-t} - (-e^{-t})e^{3t} = 2e^{2t}.
+\]
+Thus:
+\[
+V^{-1}(t) = \frac{1}{2e^{2t}}\begin{bmatrix} e^{-t} & e^{-t} \\ -e^{3t} & e^{3t} \end{bmatrix}.
+\]
+
+\paragraph{Compute \(\mathbf{u}'(t)\):}
+\[
+\mathbf{u}'(t) = \frac{1}{2e^{2t}}\begin{bmatrix} e^{-t} & e^{-t} \\ -e^{3t} & e^{3t} \end{bmatrix}\begin{bmatrix} e^{2t} \\ 0 \end{bmatrix} = \frac{1}{2}\begin{bmatrix} e^{-t} \\ -e^{3t} \end{bmatrix}.
+\]
+
+\paragraph{Integrate \(\mathbf{u}'(t)\):}
+\[
+\mathbf{u}(t) = \int \frac{1}{2}\begin{bmatrix} e^{-t} \\ -e^{3t} \end{bmatrix} dt = \frac{1}{2}\begin{bmatrix} -e^{-t} \\ -\frac{1}{3}e^{3t} \end{bmatrix} + \begin{bmatrix} k_1 \\ k_2 \end{bmatrix}.
+\]
+
+\subsubsection*{Particular Solution}
+Substitute \( \mathbf{u}(t) \) into \( \mathbf{y}_p(t) = V(t)\mathbf{u}(t) \):
+\[
+\mathbf{y}_p(t) = \begin{bmatrix} e^{3t} & -e^{-t} \\ e^{3t} & e^{-t} \end{bmatrix}\left(\frac{1}{2}\begin{bmatrix} -e^{-t} \\ -\frac{1}{3}e^{3t} \end{bmatrix}\right).
+\]
+Perform the matrix multiplication for each row:
+\begin{align*}
+\mathbf{y}_{p,1}(t) &= \frac{1}{2}\left(e^{3t}(-e^{-t}) + (-e^{-t})(-\frac{1}{3}e^{3t})\right) = \frac{1}{2}\left(-e^{2t} + \frac{1}{3}e^{2t}\right) = -\frac{1}{3}e^{2t}, \\
+\mathbf{y}_{p,2}(t) &= \frac{1}{2}\left(e^{3t}(-e^{-t}) + e^{-t}(-\frac{1}{3}e^{3t})\right) = \frac{1}{2}\left(-e^{2t} - \frac{1}{3}e^{2t}\right) = -\frac{2}{3}e^{2t}.
+\end{align*}
+
+Thus, the particular solution is:
+\[
+\mathbf{y}_p(t) = \begin{bmatrix} -\frac{1}{3}e^{2t} \\ -\frac{2}{3}e^{2t} \end{bmatrix}.
+\]
+
+\subsection*{General Solution}
+Combine the homogeneous and particular solutions:
+\[
+\mathbf{y}(t) = \begin{bmatrix} c_1e^{3t} - c_2e^{-t} - \frac{1}{3}e^{2t} \\ c_1e^{3t} + c_2e^{-t} - \frac{2}{3}e^{2t} \end{bmatrix}.
+\]
+
+\section*{A 1.2: Diagonalization of \(A\)}
+We diagonalize \(A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}\) by finding the eigenvalues, eigenvectors, and forming the matrices \(V\), \(\Sigma\), and \(V^{-1}\).
+
+\subsubsection*{Step 1: Eigenvalues}
+The eigenvalues are determined by solving \( \det(A - \lambda I) = 0 \):
+\[
+\det\begin{bmatrix} 1-\lambda & 2 \\ 2 & 1-\lambda \end{bmatrix} = \lambda^2 - 2\lambda - 3 = (\lambda - 3)(\lambda + 1).
+\]
+Thus, \( \lambda_1 = 3 \) and \( \lambda_2 = -1 \).
+
+\subsubsection*{Step 2: Eigenvectors}
+For \( \lambda_1 = 3 \):
+\[
+(A - 3I)\mathbf{v} = \begin{bmatrix} -2 & 2 \\ 2 & -2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0 \implies v_1 = v_2.
+\]
+Choose \( \mathbf{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix} \).
+
+For \( \lambda_2 = -1 \):
+\[
+(A + I)\mathbf{v} = \begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix}\begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0 \implies v_1 = -v_2.
+\]
+Choose \( \mathbf{v}_2 = \begin{bmatrix} -1 \\ 1 \end{bmatrix} \).
+
+\subsubsection*{Step 3: Construct Matrices}
+The eigenvector matrix is:
+\[
+V = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix}.
+\]
+The diagonal matrix is:
+\[
+\Sigma = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}.
+\]
+The inverse of \(V\) is calculated as:
+\[
+V^{-1} = \frac{1}{\det(V)}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix} = \frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}.
+\]
+
+\subsubsection*{Verification}
+We verify the diagonalization:
+\[
+A = V\Sigma V^{-1} \implies \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix} = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix}\begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}\frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}.
+\]
+
+\subsection*{Result}
+\[
+V = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix}, \quad \Sigma = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}, \quad V^{-1} = \frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}.
+\]
+
+\section*{A 1.3: Rewrite \(\mathbf{y}'(t) = A\mathbf{y}(t) + \mathbf{g}(t)\) in Terms of \(\mathbf{z}(t)\)}
+We use the change of variable \(\mathbf{z}(t) = V^{-1}\mathbf{y}(t)\) to rewrite the given equation.
+
+\subsection*{Rewrite the System}
+The original equation is:
+\[
+\mathbf{y}'(t) = A\mathbf{y}(t) + \mathbf{g}(t).
+\]
+Substitute \(\mathbf{y}(t) = V\mathbf{z}(t)\):
+\[
+\mathbf{z}'(t) = V^{-1}\mathbf{y}'(t) = V^{-1}\left(A\mathbf{y}(t) + \mathbf{g}(t)\right).
+\]
+Since \( A = V\Sigma V^{-1} \), we have:
+\[
+\mathbf{z}'(t) = V^{-1}V\Sigma V^{-1}\mathbf{y}(t) + V^{-1}\mathbf{g}(t).
+\]
+Substitute \(\mathbf{y}(t) = V\mathbf{z}(t)\):
+\[
+\mathbf{z}'(t) = \Sigma\mathbf{z}(t) + V^{-1}\mathbf{g}(t).
+\]
+
+\subsection*{Apply to the Specific Problem}
+For this problem:
+\[
+\Sigma = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}, \quad
+V^{-1} = \frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}, \quad
+\mathbf{g}(t) = \begin{bmatrix} e^{2t} \\ 0 \end{bmatrix}.
+\]
+
+Compute \( V^{-1}\mathbf{g}(t) \):
+\[
+V^{-1}\mathbf{g}(t) = \frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}\begin{bmatrix} e^{2t} \\ 0 \end{bmatrix}.
+\]
+Multiply:
+\[
+V^{-1}\mathbf{g}(t) = \frac{1}{2}\begin{bmatrix} e^{2t} \\ -e^{2t} \end{bmatrix}.
+\]
+
+Substitute into \( \mathbf{z}'(t) = \Sigma\mathbf{z}(t) + V^{-1}\mathbf{g}(t) \):
+\[
+\mathbf{z}'(t) = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}\begin{bmatrix} z_1(t) \\ z_2(t) \end{bmatrix} + \frac{1}{2}\begin{bmatrix} e^{2t} \\ -e^{2t} \end{bmatrix}.
+\]
+
+Perform the matrix multiplication:
+\[
+\mathbf{z}'(t) = \begin{bmatrix} 3z_1(t) \\ -z_2(t) \end{bmatrix} + \frac{1}{2}\begin{bmatrix} e^{2t} \\ -e^{2t} \end{bmatrix}.
+\]
+
+Add the terms:
+\[
+\mathbf{z}'(t) = \begin{bmatrix} 3z_1(t) + \frac{1}{2}e^{2t} \\ -z_2(t) - \frac{1}{2}e^{2t} \end{bmatrix}.
+\]
+
+\subsection*{Result}
+The system in terms of \(\mathbf{z}(t)\) is:
+\[
+\mathbf{z}'(t) = \begin{bmatrix} 3z_1(t) + \frac{1}{2}e^{2t} \\ -z_2(t) - \frac{1}{2}e^{2t} \end{bmatrix}.
+\]
+
+\section*{A 1.4: Solve \(\mathbf{z}'(t) = \Sigma\mathbf{z}(t) + V^{-1}\mathbf{g}(t)\) Using Integrating Factors}
+
+We solve the decoupled system:
+\[
+\mathbf{z}'(t) = \Sigma\mathbf{z}(t) + V^{-1}\mathbf{g}(t),
+\]
+where:
+\[
+\Sigma = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}, \quad
+V^{-1} = \frac{1}{2}\begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}, \quad
+\mathbf{g}(t) = \begin{bmatrix} e^{2t} \\ 0 \end{bmatrix}.
+\]
+
+\subsection*{Decoupled System}
+From A 1.3, we know the system is:
+\[
+\mathbf{z}'(t) = \begin{bmatrix} 3z_1(t) + \frac{1}{2}e^{2t} \\ -z_2(t) - \frac{1}{2}e^{2t} \end{bmatrix}.
+\]
+This gives two equations:
+\begin{align*}
+z_1'(t) - 3z_1(t) &= \frac{1}{2}e^{2t}, \\
+z_2'(t) + z_2(t) &= -\frac{1}{2}e^{2t}.
+\end{align*}
+
+\subsection*{Solve for \(z_1(t)\)}
+The equation for \(z_1(t)\) is:
+\[
+z_1'(t) - 3z_1(t) = \frac{1}{2}e^{2t}.
+\]
+The integrating factor is:
+\[
+\mu_1(t) = e^{\int -3dt} = e^{-3t}.
+\]
+
+Multiply through by \(\mu_1(t)\):
+\[
+e^{-3t}z_1'(t) - 3e^{-3t}z_1(t) = \frac{1}{2}e^{2t}e^{-3t}.
+\]
+Simplify:
+\[
+\frac{d}{dt}\left(e^{-3t}z_1(t)\right) = \frac{1}{2}e^{-t}.
+\]
+
+Integrate both sides:
+\[
+e^{-3t}z_1(t) = \int \frac{1}{2}e^{-t}dt = -\frac{1}{2}e^{-t} + C_1.
+\]
+
+Solve for \(z_1(t)\):
+\[
+z_1(t) = e^{3t}\left(-\frac{1}{2}e^{-t} + C_1\right) = -\frac{1}{2}e^{2t} + C_1e^{3t}.
+\]
+
+\subsection*{Solve for \(z_2(t)\)}
+The equation for \(z_2(t)\) is:
+\[
+z_2'(t) + z_2(t) = -\frac{1}{2}e^{2t}.
+\]
+The integrating factor is:
+\[
+\mu_2(t) = e^{\int 1dt} = e^t.
+\]
+
+Multiply through by \(\mu_2(t)\):
+\[
+e^t z_2'(t) + e^t z_2(t) = -\frac{1}{2}e^{2t}e^t.
+\]
+Simplify:
+\[
+\frac{d}{dt}\left(e^t z_2(t)\right) = -\frac{1}{2}e^{3t}.
+\]
+
+Integrate both sides:
+\[
+e^t z_2(t) = \int -\frac{1}{2}e^{3t}dt = -\frac{1}{6}e^{3t} + C_2.
+\]
+
+Solve for \(z_2(t)\):
+\[
+z_2(t) = e^{-t}\left(-\frac{1}{6}e^{3t} + C_2\right) = -\frac{1}{6}e^{2t} + C_2e^{-t}.
+\]
+
+\subsection*{Result}
+The solutions are:
+\[
+\text{Integrating factor for } z_1(t) \text{ is } \mu_1 = e^{-3t}, \quad z_1(t) = -\frac{1}{2}e^{2t} + C_1e^{3t}.
+\]
+\[
+\text{Integrating factor for } z_2(t) \text{ is } \mu_2 = e^t, \quad z_2(t) = -\frac{1}{6}e^{2t} + C_2e^{-t}.
+\]
+
+\section*{A 1.5: Find \(\mathbf{y}(t)\) Using the Change of Variable \(\mathbf{z}(t) = V^{-1}\mathbf{y}(t)\)}
+
+To find \(\mathbf{y}(t)\), we use the change of variable \(\mathbf{z}(t) = V^{-1}\mathbf{y}(t)\), which gives:
+\[
+\mathbf{y}(t) = V\mathbf{z}(t).
+\]
+
+\subsection*{Step 1: Recall \(\mathbf{z}(t)\)}
+From A 1.4, we know:
+\[
+\mathbf{z}(t) = \begin{bmatrix} z_1(t) \\ z_2(t) \end{bmatrix} = \begin{bmatrix} -\frac{1}{2}e^{2t} + C_1e^{3t} \\ -\frac{1}{6}e^{2t} + C_2e^{-t} \end{bmatrix}.
+\]
+
+\subsection*{Step 2: Recall \(V\)}
+From A 1.2, the eigenvector matrix \(V\) is:
+\[
+V = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix}.
+\]
+
+\subsection*{Step 3: Compute \(\mathbf{y}(t)\)}
+Substitute \(\mathbf{z}(t)\) into \(\mathbf{y}(t) = V\mathbf{z}(t)\):
+\[
+\mathbf{y}(t) = \begin{bmatrix} 1 & -1 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} -\frac{1}{2}e^{2t} + C_1e^{3t} \\ -\frac{1}{6}e^{2t} + C_2e^{-t} \end{bmatrix}.
+\]
+
+\subsection*{Step 4: Perform Matrix Multiplication}
+Compute the first row of \(\mathbf{y}(t)\):
+\[
+y_1(t) = 1\cdot\left(-\frac{1}{2}e^{2t} + C_1e^{3t}\right) - 1\cdot\left(-\frac{1}{6}e^{2t} + C_2e^{-t}\right).
+\]
+Simplify:
+\[
+y_1(t) = -\frac{1}{2}e^{2t} + C_1e^{3t} + \frac{1}{6}e^{2t} - C_2e^{-t}.
+\]
+Combine like terms:
+\[
+y_1(t) = \left(-\frac{1}{2} + \frac{1}{6}\right)e^{2t} + C_1e^{3t} - C_2e^{-t}.
+\]
+\[
+y_1(t) = -\frac{1}{3}e^{2t} + C_1e^{3t} - C_2e^{-t}.
+\]
+
+Compute the second row of \(\mathbf{y}(t)\):
+\[
+y_2(t) = 1\cdot\left(-\frac{1}{2}e^{2t} + C_1e^{3t}\right) + 1\cdot\left(-\frac{1}{6}e^{2t} + C_2e^{-t}\right).
+\]
+Simplify:
+\[
+y_2(t) = -\frac{1}{2}e^{2t} + C_1e^{3t} -\frac{1}{6}e^{2t} + C_2e^{-t}.
+\]
+Combine like terms:
+\[
+y_2(t) = \left(-\frac{1}{2} - \frac{1}{6}\right)e^{2t} + C_1e^{3t} + C_2e^{-t}.
+\]
+\[
+y_2(t) = -\frac{2}{3}e^{2t} + C_1e^{3t} + C_2e^{-t}.
+\]
+
+\subsection*{Result}
+The solution is:
+\[
+\mathbf{y}(t) = \begin{bmatrix} y_1(t) \\ y_2(t) \end{bmatrix} = \begin{bmatrix} -\frac{1}{3}e^{2t} + C_1e^{3t} - C_2e^{-t} \\ -\frac{2}{3}e^{2t} + C_1e^{3t} + C_2e^{-t} \end{bmatrix}.
+\]
+
+\section*{A 1.6: Compare the Solutions in A 1.1 and A 1.5}
+
+\subsection*{Recap of the Solutions}
+From A 1.1, the solution was:
+\[
+\mathbf{y}(t) = \begin{bmatrix} c_1e^{3t} - c_2e^{-t} - \frac{1}{3}e^{2t} \\ c_1e^{3t} + c_2e^{-t} - \frac{2}{3}e^{2t} \end{bmatrix},
+\]
+where \(c_1\) and \(c_2\) are arbitrary constants.
+
+From A 1.5, the solution was:
+\[
+\mathbf{y}(t) = \begin{bmatrix} -\frac{1}{3}e^{2t} + C_1e^{3t} - C_2e^{-t} \\ -\frac{2}{3}e^{2t} + C_1e^{3t} + C_2e^{-t} \end{bmatrix},
+\]
+where \(C_1\) and \(C_2\) are arbitrary constants.
+
+\subsection*{Comparison of the Two Solutions}
+Both solutions have the same form, but the constants \(c_1\), \(c_2\) in A 1.1 correspond to \(C_1\), \(C_2\) in A 1.5. These constants are arbitrary and account for the general solution of the homogeneous equation.
+
+\subsubsection*{Matching Components}
+The particular solutions in both cases are:
+\[
+y_1(t) \text{ has the term } -\frac{1}{3}e^{2t}, \quad y_2(t) \text{ has the term } -\frac{2}{3}e^{2t}.
+\]
+
+\subsubsection*{Constants}
+The constants \(c_1, c_2\) and \(C_1, C_2\) reflect the general solution to the homogeneous equation. While they may appear in different notation, their roles in the solutions are equivalent.
+
+\subsection*{Conclusion}
+The solutions from A 1.1 and A 1.5 are \textbf{equivalent}. Any apparent difference arises from notation or the method of deriving the constants \(c_1, c_2\) versus \(C_1, C_2\). However, these constants are arbitrary and lead to the same general solution.
+
+\section*{A 1.7: Efficiency Comparison Between A 1.1 and A 1.5}
+
+\subsection*{Methods Overview}
+\textbf{Method in A 1.1: Direct Solution Using Variation of Parameters}
+\begin{itemize}
+    \item Solve the homogeneous equation to find the fundamental matrix \(V(t)\).
+    \item Compute the inverse of \(V(t)\), a time-dependent matrix.
+    \item Use the variation of parameters formula:
+    \[
+    \mathbf{y}_p(t) = V(t) \int V^{-1}(t) \mathbf{g}(t) \, dt.
+    \]
+    \item Perform integration, which depends on the complexity of \(V^{-1}(t)\) and \(\mathbf{g}(t)\).
+    \item Combine the homogeneous and particular solutions.
+\end{itemize}
+
+\textbf{Method in A 1.5: Diagonalization and Change of Variables}
+\begin{itemize}
+    \item Diagonalize \(A = V\Sigma V^{-1}\) to simplify the system.
+    \item Use the change of variables \(\mathbf{z}(t) = V^{-1}\mathbf{y}(t)\), reducing the system to decoupled scalar equations:
+    \[
+    \mathbf{z}'(t) = \Sigma\mathbf{z}(t) + V^{-1}\mathbf{g}(t).
+    \]
+    \item Solve each scalar equation independently using integrating factors.
+    \item Transform back to \(\mathbf{y}(t)\) using \(\mathbf{y}(t) = V\mathbf{z}(t)\).
+\end{itemize}
+
+\subsection*{Analysis}
+\textbf{Matrix Inversion:}
+\begin{itemize}
+    \item A 1.1: Requires the inversion of the time-dependent fundamental matrix \(V(t)\), which involves differentiating \(V(t)\) and performing symbolic computations. This is computationally expensive.
+    \item A 1.5: Requires only the inversion of the constant eigenvector matrix \(V\), which is much simpler.
+\end{itemize}
+
+\textbf{Integration:}
+\begin{itemize}
+    \item A 1.1: Integrates \(\mathbf{u}'(t) = V^{-1}(t)\mathbf{g}(t)\), where \(V^{-1}(t)\) is time-dependent. This can lead to challenging integrations if \(V^{-1}(t)\) is complex.
+    \item A 1.5: Integrates decoupled scalar equations for \(z_1(t)\) and \(z_2(t)\), which are simpler since they involve fewer terms and no matrix inversions.
+\end{itemize}
+
+\textbf{System:}
+\begin{itemize}
+    \item A 1.1: The system remains coupled, requiring more complex computations to handle the full matrix form.
+    \item A 1.5: Diagonalization decouples the system, reducing it to scalar equations that are much easier to solve.
+\end{itemize}
+
+\subsection*{Preferences}
+\textbf{When to Prefer A 1.1:}
+\begin{itemize}
+    \item For small systems, where the dimension of \(A\) is low (e.g., \(2 \times 2\)) and \(\mathbf{g}(t)\) is simple, the direct approach may be less time-consuming.
+    \item When diagonalization is not possible, such as if \(A\) is not diagonalizable.
+\end{itemize}
+
+\textbf{When to Prefer A 1.5:}
+\begin{itemize}
+    \item For larger systems or higher dimensions (e.g., \(3 \times 3\) or larger), the decoupling of the system saves significant computational effort.
+    \item For complex \(\mathbf{g}(t)\), where the decoupled equations in A 1.5 lead to simpler integrations.
+\end{itemize}
+
+\subsection*{Conclusion}
+The method in A 1.5 is generally more efficient for larger systems or when diagonalization is possible, as it avoids time intensive matrix inversions and simplifies integration through decoupling. However, A 1.1 can be preferred for small systems or when diagonalization is not feasible.
+
+\section*{A 2.1: Show that \(\frac{d}{dt} e^{At} = A e^{At}\) if \(A\) is a constant matrix}
+
+\subsection*{Step 1: Recall the Definition of \(e^{At}\)}
+
+The matrix exponential is defined as:
+\[
+e^{At} = I + At + \frac{(At)^2}{2!} + \frac{(At)^3}{3!} + \cdots
+\]
+
+\subsection*{Step 2: Differentiate \(e^{At}\)}
+
+The derivative of \(e^{At}\) with respect to \(t\) is:
+\[
+\frac{d}{dt} e^{At} = \frac{d}{dt} \left( I + At + \frac{(At)^2}{2!} + \frac{(At)^3}{3!} + \cdots \right).
+\]
+
+Using term-by-term differentiation:
+\[
+\frac{d}{dt} e^{At} = \frac{d}{dt} I + \frac{d}{dt}(At) + \frac{d}{dt} \left( \frac{(At)^2}{2!} \right) + \frac{d}{dt} \left( \frac{(At)^3}{3!} \right) + \cdots
+\]
+
+Each term is differentiated as follows:
+\begin{itemize}
+    \item The derivative of \(I\), the identity matrix, is \(0\), as it is constant.
+    \item The derivative of \(At\) is simply \(A\), as \(A\) is a constant matrix.
+    \item For higher-order terms \(\frac{(At)^k}{k!}\), the derivative applies only to \(t^k\), yielding:
+    \[
+    \frac{d}{dt} \frac{(At)^k}{k!} = \frac{k (At)^{k-1} A}{k!} = \frac{(At)^{k-1} A}{(k-1)!}.
+    \]
+\end{itemize}
+
+Thus, the derivative becomes:
+\[
+\frac{d}{dt} e^{At} = A + A^2t + \frac{A^3t^2}{2!} + \frac{A^4t^3}{3!} + \cdots
+\]
+
+\subsection*{Step 3: Factor Out \(A\)}
+
+We recognize that the resulting series is identical to \(A \cdot e^{At}\):
+\[
+\frac{d}{dt} e^{At} = A \left( I + At + \frac{(At)^2}{2!} + \frac{(At)^3}{3!} + \cdots \right) = A e^{At}.
+\]
+
+\subsection*{Conclusion}
+
+Thus, we have shown that:
+\[
+\frac{d}{dt} e^{At} = A e^{At}.
+\]
+
+\section*{A 2.2: Does \(e^{At}\) Satisfy the Matrix Differential Equation \(Y'(t) = AY(t)\)?}
+
+\subsection*{Step 1: Matrix Differential Equation Setup}
+
+The matrix differential equation is given as:
+\[
+Y'(t) = A Y(t),
+\]
+where \(Y(t)\) is an \(n \times n\) matrix-valued function, and \(A\) is a constant \(n \times n\) matrix.
+
+We want to check if \(Y(t) = e^{At}\) satisfies this equation.
+
+\subsection*{Step 2: Differentiate \(e^{At}\)}
+
+From A 2.1, we know:
+\[
+\frac{d}{dt} e^{At} = A e^{At}.
+\]
+
+Substituting \(Y(t) = e^{At}\), this becomes:
+\[
+Y'(t) = A Y(t).
+\]
+
+Thus, \(e^{At}\) satisfies the differential equation \(Y'(t) = A Y(t)\).
+
+\subsection*{Step 3: Theorem 4.9 Applicability}
+
+Theorem 4.9 states the following for a first-order homogeneous linear system \(Y'(t) = P(t)Y(t)\):
+\begin{enumerate}
+    \item Any solution matrix \( \Phi(t) \) of \( Y'(t) = P(t)Y(t) \) satisfies the matrix differential equation \(\Phi'(t) = P(t)\Phi(t)\).
+    \item For a constant matrix \(A\), and with the initial condition \(Y(0) = I\) (the identity matrix), there exists a unique solution matrix, and this solution is \(e^{At}\).
+\end{enumerate}
+
+Since \(e^{At}\) satisfies:
+\[
+\frac{d}{dt} e^{At} = A e^{At},
+\]
+and the initial condition:
+\[
+e^{A \cdot 0} = I,
+\]
+Theorem 4.9 confirms that \(e^{At}\) is the unique solution matrix for \(Y'(t) = AY(t)\) with \(Y(0) = I\).
+
+\subsection*{Step 4: Invertibility of \(e^{At}\)}
+
+To confirm that \(e^{At}\) is a fundamental solution matrix, it must be invertible for all \(t\). Using the diagonalization \(A = V \Sigma V^{-1}\), we know:
+\[
+e^{At} = V e^{\Sigma t} V^{-1}.
+\]
+
+The determinant of \(e^{At}\) is:
+\[
+\det(e^{At}) = \det(V) \cdot \det(e^{\Sigma t}) \cdot \det(V^{-1}),
+\]
+where \(\det(e^{\Sigma t}) = e^{\lambda_1 t} \cdot e^{\lambda_2 t} \cdots e^{\lambda_n t}\), the product of the exponentials of the eigenvalues of \(A\). Since \(e^{\lambda_i t} \neq 0\) for all \(t\), \(\det(e^{At}) \neq 0\), confirming invertibility.
+
+\subsection*{Conclusion}
+
+\(e^{At}\) satisfies the matrix differential equation \(Y'(t) = AY(t)\), as it:
+\begin{itemize}
+    \item Satisfies \(\frac{d}{dt} e^{At} = A e^{At}\), as shown in Step 2.
+    \item Meets the initial condition \(e^{A \cdot 0} = I\), as required by Theorem 4.9.
+    \item Is invertible for all \(t\), making it a fundamental solution matrix.
+\end{itemize}
+
+\section*{A 2.3: Is \(e^{At}\) a Solution Matrix for \(y'(t) = Ay(t)\)?}
+
+We analyze whether \(e^{At}\) is a solution matrix for the differential equation \(y'(t) = Ay(t)\), by examining it in terms of its columns.
+
+\subsection*{Step 1: Matrix Representation of \(e^{At}\)}
+
+The matrix \(e^{At}\) can be expressed in terms of its columns:
+\[
+e^{At} = \begin{bmatrix} 
+\phi_1(t) & \phi_2(t) & \cdots & \phi_n(t)
+\end{bmatrix},
+\]
+where \(\phi_i(t)\) represents the \(i\)-th column of \(e^{At}\), and each \(\phi_i(t)\) is an \(n \times 1\) vector.
+
+\subsection*{Step 2: Substitution into \(y'(t) = Ay(t)\)}
+
+From A 2.1, we know:
+\[
+\frac{d}{dt} e^{At} = A e^{At}.
+\]
+
+Substituting the column-based representation of \(e^{At}\), the left-hand side becomes:
+\[
+\frac{d}{dt} e^{At} = \frac{d}{dt} \begin{bmatrix} 
+\phi_1(t) & \phi_2(t) & \cdots & \phi_n(t)
+\end{bmatrix} 
+= \begin{bmatrix} 
+\phi_1'(t) & \phi_2'(t) & \cdots & \phi_n'(t)
+\end{bmatrix}.
+\]
+
+The right-hand side becomes:
+\[
+A e^{At} = A \begin{bmatrix} 
+\phi_1(t) & \phi_2(t) & \cdots & \phi_n(t)
+\end{bmatrix} 
+= \begin{bmatrix} 
+A \phi_1(t) & A \phi_2(t) & \cdots & A \phi_n(t)
+\end{bmatrix}.
+\]
+
+Comparing both sides, we see that for each column \(\phi_i(t)\), the equation:
+\[
+\phi_i'(t) = A \phi_i(t)
+\]
+is satisfied.
+
+\subsection*{Step 3: Initial Condition for \(e^{At}\)}
+
+At \(t = 0\), \(e^{At}\) reduces to the identity matrix \(I\):
+\[
+e^{A \cdot 0} = I = \begin{bmatrix} 
+\phi_1(0) & \phi_2(0) & \cdots & \phi_n(0)
+\end{bmatrix}.
+\]
+
+Thus, the columns \(\phi_1(0), \phi_2(0), \ldots, \phi_n(0)\) form a basis for \(\mathbb{R}^n\) and are linearly independent.
+
+\subsection*{Step 4: Linearly Independent Solutions}
+
+The columns of \(e^{At}\) provide \(n\) linearly independent solutions to the differential equation \(y'(t) = Ay(t)\), as required for a fundamental solution matrix. This is ensured by the invertibility of \(e^{At}\), since \(\det(e^{At}) \neq 0\) for all \(t\).
+
+\subsection*{Conclusion}
+
+Yes, \(e^{At}\) is a solution matrix for \(y'(t) = Ay(t)\). Each column of \(e^{At}\) satisfies the equation \(\phi_i'(t) = A \phi_i(t)\), and the initial condition \(e^{A \cdot 0} = I\) ensures linear independence of the columns, making \(e^{At}\) a fundamental solution matrix.
+
+\section*{A 2.4: Show that \(e^{\Sigma t} = \begin{bmatrix} e^{\lambda_1 t} & 0 \\ 0 & e^{\lambda_2 t} \end{bmatrix}\)}
+
+Given \(\Sigma = \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix}\), we use the definition of the matrix exponential to show:
+\[
+e^{\Sigma t} = \begin{bmatrix} e^{\lambda_1 t} & 0 \\ 0 & e^{\lambda_2 t} \end{bmatrix}.
+\]
+
+\subsection*{Step 1: Definition of \(e^{\Sigma t}\)}
+
+The matrix exponential is defined as:
+\[
+e^{\Sigma t} = I + \Sigma t + \frac{(\Sigma t)^2}{2!} + \frac{(\Sigma t)^3}{3!} + \cdots.
+\]
+
+For \(\Sigma = \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix}\), we compute the powers of \(\Sigma t\).
+
+\subsection*{Step 2: Compute Powers of \(\Sigma t\)}
+
+Since \(\Sigma\) is a diagonal matrix:
+\[
+\Sigma = \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \end{bmatrix},
+\]
+its powers are given by:
+\[
+\Sigma^2 = \begin{bmatrix} \lambda_1^2 & 0 \\ 0 & \lambda_2^2 \end{bmatrix}, \quad
+\Sigma^3 = \begin{bmatrix} \lambda_1^3 & 0 \\ 0 & \lambda_2^3 \end{bmatrix}, \quad
+\Sigma^k = \begin{bmatrix} \lambda_1^k & 0 \\ 0 & \lambda_2^k \end{bmatrix}.
+\]
+
+Thus, for any positive integer \(k\):
+\[
+(\Sigma t)^k = \begin{bmatrix} (\lambda_1 t)^k & 0 \\ 0 & (\lambda_2 t)^k \end{bmatrix}.
+\]
+
+\subsection*{Step 3: Substitute into the Series for \(e^{\Sigma t}\)}
+
+Substituting \((\Sigma t)^k\) into the series definition:
+\[
+e^{\Sigma t} = I + \Sigma t + \frac{(\Sigma t)^2}{2!} + \frac{(\Sigma t)^3}{3!} + \cdots.
+\]
+
+The \(k\)-th term in the series is:
+\[
+\frac{(\Sigma t)^k}{k!} = \frac{1}{k!} \begin{bmatrix} (\lambda_1 t)^k & 0 \\ 0 & (\lambda_2 t)^k \end{bmatrix}.
+\]
+
+Adding all terms:
+\[
+e^{\Sigma t} = \begin{bmatrix} 
+\sum_{k=0}^\infty \frac{(\lambda_1 t)^k}{k!} & 0 \\ 
+0 & \sum_{k=0}^\infty \frac{(\lambda_2 t)^k}{k!}
+\end{bmatrix}.
+\]
+
+\subsection*{Step 4: Recognize the Scalar Exponential Series}
+
+The series \(\sum_{k=0}^\infty \frac{(\lambda_1 t)^k}{k!}\) is the scalar exponential \(e^{\lambda_1 t}\), and similarly for \(\lambda_2\). Thus:
+\[
+e^{\Sigma t} = \begin{bmatrix} e^{\lambda_1 t} & 0 \\ 0 & e^{\lambda_2 t} \end{bmatrix}.
+\]
+
+\subsection*{Conclusion}
+
+We have shown that:
+\[
+e^{\Sigma t} = \begin{bmatrix} e^{\lambda_1 t} & 0 \\ 0 & e^{\lambda_2 t} \end{bmatrix}.
+\]
+
+\section*{A 2.5: Show that \(A^2 = V \Sigma^2 V^{-1}\) and Argue that \(A^k = V \Sigma^k V^{-1}\)}
+
+Let \(A = V \Sigma V^{-1}\), where \(\Sigma\) is a diagonal matrix. We aim to compute \(A^2\) and generalize it to \(A^k\) for any positive integer \(k\).
+
+\subsection*{Step 1: Compute \(A^2\)}
+
+Start with \(A = V \Sigma V^{-1}\):
+\[
+A^2 = A \cdot A = (V \Sigma V^{-1}) (V \Sigma V^{-1}).
+\]
+
+Using the associative property of matrix multiplication:
+\[
+A^2 = V \Sigma (V^{-1} V) \Sigma V^{-1}.
+\]
+
+Since \(V^{-1} V = I\), the identity matrix:
+\[
+A^2 = V \Sigma \Sigma V^{-1}.
+\]
+
+Recognize that \(\Sigma \Sigma = \Sigma^2\) (since \(\Sigma\) is diagonal):
+\[
+A^2 = V \Sigma^2 V^{-1}.
+\]
+
+\subsection*{Step 2: Generalize to \(A^k\)}
+
+For \(k = 1\), the result holds because:
+\[
+A^1 = V \Sigma^1 V^{-1}.
+\]
+
+Assume the result holds for some \(k \geq 1\), i.e., \(A^k = V \Sigma^k V^{-1}\). To prove it for \(k+1\):
+\[
+A^{k+1} = A \cdot A^k = (V \Sigma V^{-1})(V \Sigma^k V^{-1}).
+\]
+
+Using the associative property:
+\[
+A^{k+1} = V \Sigma (V^{-1} V) \Sigma^k V^{-1}.
+\]
+
+Since \(V^{-1} V = I\):
+\[
+A^{k+1} = V \Sigma \Sigma^k V^{-1}.
+\]
+
+Recognize that \(\Sigma \Sigma^k = \Sigma^{k+1}\):
+\[
+A^{k+1} = V \Sigma^{k+1} V^{-1}.
+\]
+
+By induction, the formula \(A^k = V \Sigma^k V^{-1}\) holds for all positive integers \(k\).
+
+\subsection*{Conclusion}
+
+We have shown that:
+\[
+A^2 = V \Sigma^2 V^{-1},
+\]
+and by induction:
+\[
+A^k = V \Sigma^k V^{-1}, \quad \text{for any positive integer } k.
+\]
+
+\section*{A 2.6: Show that \(e^{At} = V e^{\Sigma t} V^{-1}\) if \(A = V \Sigma V^{-1}\)}
+
+Let \(A = V \Sigma V^{-1}\), where \(\Sigma\) is a diagonal matrix. Using the result from A 2.5, we will show that:
+\[
+e^{At} = V e^{\Sigma t} V^{-1}.
+\]
+
+\subsection*{Step 1: Recall the Definition of \(e^{At}\)}
+
+The matrix exponential is defined as:
+\[
+e^{At} = \sum_{k=0}^\infty \frac{(At)^k}{k!}.
+\]
+
+Substitute \(A = V \Sigma V^{-1}\) into the series:
+\[
+e^{At} = \sum_{k=0}^\infty \frac{(V \Sigma V^{-1} t)^k}{k!}.
+\]
+
+\subsection*{Step 2: Expand \((V \Sigma V^{-1} t)^k\)}
+
+Using the result from A 2.5, we know:
+\[
+A^k = (V \Sigma V^{-1})^k = V \Sigma^k V^{-1}.
+\]
+
+Thus:
+\[
+(At)^k = (V \Sigma V^{-1} t)^k = V (\Sigma t)^k V^{-1}.
+\]
+
+\subsection*{Step 3: Substitute into the Series for \(e^{At}\)}
+
+Substituting \((At)^k = V (\Sigma t)^k V^{-1}\) into the series definition:
+\[
+e^{At} = \sum_{k=0}^\infty \frac{V (\Sigma t)^k V^{-1}}{k!}.
+\]
+
+Since \(V\) and \(V^{-1}\) are constant matrices, they can be factored out of the summation:
+\[
+e^{At} = V \left( \sum_{k=0}^\infty \frac{(\Sigma t)^k}{k!} \right) V^{-1}.
+\]
+
+\subsection*{Step 4: Recognize \(e^{\Sigma t}\)}
+
+The series inside the parentheses is the definition of \(e^{\Sigma t}\):
+\[
+e^{\Sigma t} = \sum_{k=0}^\infty \frac{(\Sigma t)^k}{k!}.
+\]
+
+Thus:
+\[
+e^{At} = V e^{\Sigma t} V^{-1}.
+\]
+
+\subsection*{Conclusion}
+
+We have shown that if \(A = V \Sigma V^{-1}\), then:
+\[
+e^{At} = V e^{\Sigma t} V^{-1}.
+\]
+
+\section*{A 2.7: Calculate \(e^{At}\) Where \(A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}\)}
+
+We calculate \(e^{At}\) for \(A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}\) using diagonalization and the formula \(e^{At} = V e^{\Sigma t} V^{-1}\).
+
+\subsection*{Step 1: Eigenvalues of \(A\)}
+
+The eigenvalues of \(A\) are found by solving \(\det(A - \lambda I) = 0\):
+\[
+A - \lambda I = \begin{bmatrix} 1-\lambda & 2 \\ 2 & 1-\lambda \end{bmatrix}.
+\]
+The determinant is:
+\[
+\det(A - \lambda I) = (1-\lambda)(1-\lambda) - 4 = \lambda^2 - 2\lambda - 3.
+\]
+Factoring:
+\[
+\lambda^2 - 2\lambda - 3 = (\lambda - 3)(\lambda + 1).
+\]
+The eigenvalues are:
+\[
+\lambda_1 = 3, \quad \lambda_2 = -1.
+\]
+
+\subsection*{Step 2: Eigenvectors of \(A\)}
+
+For \(\lambda_1 = 3\), solve \((A - 3I)v = 0\):
+\[
+A - 3I = \begin{bmatrix} -2 & 2 \\ 2 & -2 \end{bmatrix}.
+\]
+Row-reducing:
+\[
+\begin{bmatrix} -2 & 2 \\ 2 & -2 \end{bmatrix} \to \begin{bmatrix} 1 & -1 \\ 0 & 0 \end{bmatrix}.
+\]
+The eigenvector is:
+\[
+v_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}.
+\]
+
+For \(\lambda_2 = -1\), solve \((A + I)v = 0\):
+\[
+A + I = \begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix}.
+\]
+Row-reducing:
+\[
+\begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix} \to \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}.
+\]
+The eigenvector is:
+\[
+v_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}.
+\]
+
+\subsection*{Step 3: Diagonalization of \(A\)}
+
+The matrix \(A\) can be diagonalized as \(A = V \Sigma V^{-1}\), where:
+\[
+V = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}, \quad \Sigma = \begin{bmatrix} 3 & 0 \\ 0 & -1 \end{bmatrix}.
+\]
+
+The inverse of \(V\) is:
+\[
+V^{-1} = \frac{1}{\det(V)} \begin{bmatrix} -1 & -1 \\ -1 & 1 \end{bmatrix}, \quad \det(V) = -2.
+\]
+Thus:
+\[
+V^{-1} = \begin{bmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & -\frac{1}{2} \end{bmatrix}.
+\]
+
+\subsection*{Step 4: Compute \(e^{At} = V e^{\Sigma t} V^{-1}\)}
+
+The exponential of \(\Sigma t\) is:
+\[
+e^{\Sigma t} = \begin{bmatrix} e^{3t} & 0 \\ 0 & e^{-t} \end{bmatrix}.
+\]
+
+Substitute into the formula:
+\[
+e^{At} = V e^{\Sigma t} V^{-1}.
+\]
+
+First, compute \(V e^{\Sigma t}\):
+\[
+V e^{\Sigma t} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} e^{3t} & 0 \\ 0 & e^{-t} \end{bmatrix} = \begin{bmatrix} e^{3t} & e^{-t} \\ e^{3t} & -e^{-t} \end{bmatrix}.
+\]
+
+Then, compute \((V e^{\Sigma t}) V^{-1}\):
+\[
+(V e^{\Sigma t}) V^{-1} = \begin{bmatrix} e^{3t} & e^{-t} \\ e^{3t} & -e^{-t} \end{bmatrix} \begin{bmatrix} \frac{1}{2} & \frac{1}{2} \\ \frac{1}{2} & -\frac{1}{2} \end{bmatrix}.
+\]
+
+Perform the matrix multiplication:
+
+1. First row, first column:
+\[
+\frac{1}{2} e^{3t} + \frac{1}{2} e^{-t} = \frac{e^{3t} + e^{-t}}{2}.
+\]
+
+2. First row, second column:
+\[
+\frac{1}{2} e^{3t} - \frac{1}{2} e^{-t} = \frac{e^{3t} - e^{-t}}{2}.
+\]
+
+3. Second row, first column:
+\[
+\frac{1}{2} e^{3t} + \frac{1}{2} e^{-t} = \frac{e^{3t} + e^{-t}}{2}.
+\]
+
+4. Second row, second column:
+\[
+\frac{1}{2} e^{3t} - \frac{1}{2} e^{-t} = \frac{-e^{3t} + e^{-t}}{2}.
+\]
+
+Thus:
+\[
+e^{At} = \begin{bmatrix} 
+\frac{e^{3t} + e^{-t}}{2} & \frac{e^{3t} - e^{-t}}{2} \\
+\frac{e^{3t} - e^{-t}}{2} & \frac{e^{3t} + e^{-t}}{2}
+\end{bmatrix}.
+\]
+
+\subsection*{Conclusion}
+
+The matrix exponential \(e^{At}\) is:
+\[
+e^{At} = \begin{bmatrix} 
+\frac{e^{3t} + e^{-t}}{2} & \frac{e^{3t} - e^{-t}}{2} \\
+\frac{e^{3t} - e^{-t}}{2} & \frac{e^{3t} + e^{-t}}{2}
+\end{bmatrix}.
+\]
+
+\section*{A 2.8: Is \(e^{At}\) a Fundamental Solution Matrix for \(y'(t) = Ay(t)\)?}
+
+We determine whether \(e^{At}\) is a fundamental solution matrix for \(y'(t) = Ay(t)\).
+
+\subsection*{Step 1: Definition of a Fundamental Solution Matrix}
+
+A matrix \(\Phi(t)\) is a fundamental solution matrix for \(y'(t) = Ay(t)\) if:
+\begin{enumerate}
+    \item \(\Phi'(t) = A \Phi(t)\),
+    \item \(\Phi(0) = I\) (the identity matrix),
+    \item \(\Phi(t)\) is invertible for all \(t\) (i.e., \(\det(\Phi(t)) \neq 0\)).
+\end{enumerate}
+
+We will verify these conditions for \(e^{At}\).
+
+\subsection*{Step 2: Verify \(\Phi'(t) = A \Phi(t)\)}
+
+From A 2.1, we know:
+\[
+\frac{d}{dt} e^{At} = A e^{At}.
+\]
+Thus, \(e^{At}\) satisfies the differential equation \(\Phi'(t) = A \Phi(t)\).
+
+\subsection*{Step 3: Verify \(\Phi(0) = I\)}
+
+Substitute \(t = 0\) into \(e^{At}\):
+\[
+e^{A \cdot 0} = I,
+\]
+where \(I\) is the identity matrix. Therefore, \(e^{At}\) satisfies the initial condition \(\Phi(0) = I\).
+
+\subsection*{Step 4: Verify Invertibility of \(e^{At}\)}
+
+To confirm invertibility, consider the diagonalization of \(e^{At}\) as:
+\[
+e^{At} = V e^{\Sigma t} V^{-1},
+\]
+where \(e^{\Sigma t}\) is a diagonal matrix with entries \(e^{\lambda_1 t}, e^{\lambda_2 t}, \ldots, e^{\lambda_n t}\) (the exponentials of the eigenvalues of \(A\)).
+
+The determinant of \(e^{At}\) is:
+\[
+\det(e^{At}) = \det(V) \cdot \det(e^{\Sigma t}) \cdot \det(V^{-1}).
+\]
+Since \(\det(V) \neq 0\) (as \(V\) is invertible) and:
+\[
+\det(e^{\Sigma t}) = e^{\lambda_1 t} \cdot e^{\lambda_2 t} \cdots e^{\lambda_n t},
+\]
+and \(e^{\lambda_i t} \neq 0\) for all \(t\), it follows that \(\det(e^{At}) \neq 0\) for all \(t\). Thus, \(e^{At}\) is invertible.
+
+\subsection*{Step 5: Verify Linearly Independent Columns}
+
+The columns of \(e^{At}\) are linearly independent because \(e^{At}\) is invertible. Furthermore, each column satisfies the differential equation \(y'(t) = Ay(t)\), as shown in A 2.3.
+
+\subsection*{Conclusion}
+
+Yes, \(e^{At}\) is a fundamental solution matrix for \(y'(t) = Ay(t)\). It satisfies:
+\begin{itemize}
+    \item The differential equation \(\Phi'(t) = A \Phi(t)\),
+    \item The initial condition \(\Phi(0) = I\),
+    \item Invertibility for all \(t\), ensuring linearly independent columns.
+\end{itemize}
+
+\section*{A 2.9: Calculate the Matrix \(e^{At}\) When \(t = 0\)}
+
+We calculate \(e^{At}\) for \(t = 0\) using the definition of the matrix exponential.
+
+\subsection*{Step 1: Recall the Definition of \(e^{At}\)}
+
+The matrix exponential is defined as:
+\[
+e^{At} = \sum_{k=0}^\infty \frac{(At)^k}{k!}.
+\]
+
+\subsection*{Step 2: Substitute \(t = 0\)}
+
+At \(t = 0\), the matrix \(At = 0\), and all terms involving powers of \(t\) vanish except for the \(k = 0\) term:
+\[
+e^{A \cdot 0} = \frac{(A \cdot 0)^0}{0!}.
+\]
+
+Since \((A \cdot 0)^0 = I\) (the identity matrix) and \(0! = 1\), we have:
+\[
+e^{A \cdot 0} = I.
+\]
+
+\subsection*{Conclusion}
+
+When \(t = 0\), the matrix exponential is:
+\[
+e^{At} = I = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.
+\]
+
+\section*{A 2.10: Solution to \(y'(t) = Ay(t)\), \(y(0) = \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}\), in Terms of \(e^{At}\)}
+
+We solve the system \(y'(t) = Ay(t)\) with the initial condition \(y(0) = \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}\), expressing the solution in terms of \(e^{At}\).
+
+\subsection*{Step 1: General Solution for \(y'(t) = Ay(t)\)}
+
+The general solution to \(y'(t) = Ay(t)\) is:
+\[
+y(t) = e^{At} y(0),
+\]
+where \(e^{At}\) is the matrix exponential, and \(y(0)\) is the initial condition vector.
+
+\subsection*{Step 2: Substitute the Initial Condition}
+
+The given initial condition is:
+\[
+y(0) = \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}.
+\]
+
+Substituting this into the general solution:
+\[
+y(t) = e^{At} \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}.
+\]
+
+\subsection*{Step 3: Recall \(e^{At}\) for \(A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}\)}
+
+From A 2.7, we computed:
+\[
+e^{At} = \begin{bmatrix} 
+\frac{e^{3t} + e^{-t}}{2} & \frac{e^{3t} - e^{-t}}{2} \\
+\frac{e^{3t} - e^{-t}}{2} & \frac{e^{3t} + e^{-t}}{2}
+\end{bmatrix}.
+\]
+
+\subsection*{Step 4: Perform the Matrix-Vector Multiplication}
+
+Multiply \(e^{At}\) by \(y(0)\):
+\[
+y(t) = \begin{bmatrix} 
+\frac{e^{3t} + e^{-t}}{2} & \frac{e^{3t} - e^{-t}}{2} \\
+\frac{e^{3t} - e^{-t}}{2} & \frac{e^{3t} + e^{-t}}{2}
+\end{bmatrix} 
+\begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}.
+\]
+
+1. Compute the first row:
+\[
+y_1(t) = \frac{e^{3t} + e^{-t}}{2} \alpha_1 + \frac{e^{3t} - e^{-t}}{2} \alpha_2.
+\]
+Factor terms:
+\[
+y_1(t) = \frac{\alpha_1 (e^{3t} + e^{-t}) + \alpha_2 (e^{3t} - e^{-t})}{2}.
+\]
+
+2. Compute the second row:
+\[
+y_2(t) = \frac{e^{3t} - e^{-t}}{2} \alpha_1 + \frac{e^{3t} + e^{-t}}{2} \alpha_2.
+\]
+Factor terms:
+\[
+y_2(t) = \frac{\alpha_1 (e^{3t} - e^{-t}) + \alpha_2 (e^{3t} + e^{-t})}{2}.
+\]
+
+Thus, the solution is:
+\[
+y(t) = \begin{bmatrix} 
+\frac{\alpha_1 (e^{3t} + e^{-t}) + \alpha_2 (e^{3t} - e^{-t})}{2} \\
+\frac{\alpha_1 (e^{3t} - e^{-t}) + \alpha_2 (e^{3t} + e^{-t})}{2}
+\end{bmatrix}.
+\]
+
+\subsection*{Conclusion}
+
+The solution to \(y'(t) = Ay(t)\), \(y(0) = \begin{bmatrix} \alpha_1 \\ \alpha_2 \end{bmatrix}\), is:
+\[
+y(t) = \begin{bmatrix} 
+\frac{\alpha_1 (e^{3t} + e^{-t}) + \alpha_2 (e^{3t} - e^{-t})}{2} \\
+\frac{\alpha_1 (e^{3t} - e^{-t}) + \alpha_2 (e^{3t} + e^{-t})}{2}
+\end{bmatrix}.
+\]
+
+\section*{Reflection}
+
+Throughout this project, I significantly improved my understanding and application of several core mathematical concepts and computational skills. I deepened my knowledge of \textbf{matrix diagonalization}, learning to decompose matrices into eigenvectors and eigenvalues to simplify complex problems, especially when working with differential equations. I became proficient in \textbf{variation of parameters}, using it to solve nonhomogeneous systems efficiently. Additionally, I mastered the process of \textbf{decoupling systems}, leveraging variable transformations to reduce coupled equations into simpler, independent ones, which enhanced my ability to tackle systems of linear differential equations. The use of \textbf{series expansion of matrix functions} for matrix exponentials provided insight into the computational simplicity offered by diagonal matrices, especially in computing \(e^{At}\) and understanding its properties.
+
+Beyond the mathematical concepts, I developed a highly valuable skill in writing comprehensive \textbf{LaTeX files}. I invested extensive time writing over 1000 lines of LaTeX code to meticulously document every step of my solutions, ensuring clarity and professionalism. This process not only enhanced my ability to present complex mathematical work systematically but also taught me the importance of precise technical documentation. The ability to create detailed, organized LaTeX files is an incredibly valuable skill that I am proud to have acquired during this project and one that will be indispensable in future academic and professional endeavors.
+
+
+\begin{thebibliography}{99}
+
+\bibitem{devto} 
+"How to Create and Compile LaTeX Documents on Visual Studio Code," \emph{dev.to}.
+
+\bibitem{matrixExponential}
+"10.3: Solution by the Matrix Exponential," \emph{Mathematics LibreTexts}, Applied Linear Algebra and Differential Equations.
+
+\bibitem{dkatzLecture}
+D. Katz, "Lecture 11: Eigenvalues, Eigenvectors and Diagonalization," \emph{University of Kansas}.
+
+\bibitem{libretextLinearAlgebra}
+"An Application to Systems of Differential Equations," \emph{Mathematics LibreTexts}, Linear Algebra with Applications.
+
+\bibitem{latexGuide}
+"Creating LaTeX Documents," \emph{NYU Guides}.
+
+\bibitem{mitSupplement}
+"Linear Systems and Eigenvalues," \emph{MIT Supplementary Notes}, Massachusetts Institute of Technology.
+
+\bibitem{stackExchange}
+"How to Decouple a System of ODEs," \emph{Mathematics Stack Exchange}.
+
+\end{thebibliography}
+
+
+\end{document}
