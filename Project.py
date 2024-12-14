@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from tkinter import Tk, Label, Button, StringVar, messagebox, Frame, Radiobutton, IntVar, Scale, HORIZONTAL, Entry
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-def plot_sir_model(beta, gamma, N, S0, t_0, t_final, h, method, canvas):
+def plot_sir_model(beta, gamma, N, S0, t_0, t_final, h, method, canvas, outbreak_label, a1_label, a2_label, a3_label):
     try:
         beta = float(beta)
         gamma = float(gamma)
@@ -50,6 +50,38 @@ def plot_sir_model(beta, gamma, N, S0, t_0, t_final, h, method, canvas):
                 y[:, i] = y[:, i - 1] + (k1 + 2 * k2 + 2 * k3 + k4) / 6
             title = "Runge-Kutta Approximation"
 
+        # Calculate A1, A2, A3
+        dS_dt = -beta * y[0, :] * y[1, :]
+        A1 = t[np.argmin(dS_dt)]
+        A2_idx = np.argmax(y[1, :])
+        A2 = (t[A2_idx], (y[1, A2_idx] / N) * 100)
+
+        # Determine outbreak status and calculate A3 accordingly
+        peak_reached = False
+        outbreak_ended_day = None
+        for i in range(1, len(y[1, :])):
+            if y[1, i] < y[1, i - 1]:
+                peak_reached = True
+            if peak_reached and y[1, i] < 0.001 * N:
+                outbreak_status = f"Outbreak Ended at t = {t[i]:.2f}"
+                outbreak_ended_day = i
+                break
+        else:
+            outbreak_status = "Outbreak Ongoing"
+
+        if outbreak_ended_day is not None:
+            A3 = (y[2, outbreak_ended_day] / N) * 100
+        else:
+            A3 = (y[2, -1] / N) * 100
+
+        # Update outbreak status label
+        outbreak_label.config(text=f"{outbreak_status}")
+
+        # Update A1, A2, A3 labels
+        a1_label.config(text=f"A1: Disease spreading most rapidly at t = {A1:.2f}")
+        a2_label.config(text=f"A2: Peak on day {A2[0]:.2f}, {A2[1]:.2f}% infectious")
+        a3_label.config(text=f"A3: {A3:.2f}% of population infected")
+
         # Create the plot
         fig, ax = plt.subplots(figsize=(8, 6))
         ax.plot(t, y[0, :], label='S(t)', linewidth=2)
@@ -70,6 +102,8 @@ def plot_sir_model(beta, gamma, N, S0, t_0, t_final, h, method, canvas):
         canvas_plot.draw()
         canvas_plot.get_tk_widget().pack(fill='both', expand=True)
 
+        plt.close(fig)
+
     except ValueError as e:
         messagebox.showerror("Invalid Input", "Please ensure all inputs are valid numbers.")
 
@@ -85,7 +119,11 @@ def main():
             tfinal_var.get(),
             sliders["h"].get(),
             method.get(),
-            canvas
+            canvas,
+            outbreak_label,
+            a1_label,
+            a2_label,
+            a3_label
         )
 
     root = Tk()
@@ -109,7 +147,7 @@ def main():
     sliders = {}
 
     Label(frame_inputs, text="Beta (Infection rate):").grid(row=0, column=0, sticky="e", pady=5)
-    sliders["Beta"] = Scale(frame_inputs, from_=0.00001, to=0.001, resolution=0.00001, orient=HORIZONTAL, length=200, command=update_plot)
+    sliders["Beta"] = Scale(frame_inputs, from_=0.00001, to=0.001, resolution=0.000001, orient=HORIZONTAL, length=200, command=update_plot)
     sliders["Beta"].set(inputs["Beta (Infection rate)"])
     sliders["Beta"].grid(row=0, column=1, pady=5)
 
@@ -139,6 +177,22 @@ def main():
     tfinal_var = StringVar(value=str(inputs["t_final (Final time)"]))
     Entry(frame_inputs, textvariable=tfinal_var, width=20).grid(row=6, column=1, pady=5)
 
+    # Frame for A1, A2, A3 values
+    frame_metrics = Frame(root)
+    frame_metrics.pack(side="left", padx=10, pady=10)
+
+    outbreak_label = Label(frame_metrics, text="Outbreak Status: N/A", font=("Arial", 14), fg="blue")
+    outbreak_label.pack(anchor="w", pady=5)
+
+    a1_label = Label(frame_metrics, text="A1: Disease spreading most rapidly at t = N/A", font=("Arial", 12))
+    a1_label.pack(anchor="w", pady=5)
+
+    a2_label = Label(frame_metrics, text="A2: Peak on day N/A, N/A% infectious", font=("Arial", 12))
+    a2_label.pack(anchor="w", pady=5)
+
+    a3_label = Label(frame_metrics, text="A3: N/A% of population infected", font=("Arial", 12))
+    a3_label.pack(anchor="w", pady=5)
+
     # Canvas for plot
     canvas = Frame(root, width=700, height=600, bg="white")
     canvas.pack(side="left", padx=10, pady=10, fill="both", expand=True)
@@ -147,7 +201,6 @@ def main():
     method = IntVar(value=1)
     Radiobutton(frame_inputs, text="Euler", variable=method, value=1).grid(row=7, column=0, pady=5, sticky="w")
     Radiobutton(frame_inputs, text="Runge-Kutta", variable=method, value=2).grid(row=7, column=1, pady=5, sticky="w")
-
 
     # Submit button
     Button(frame_inputs, text="Submit", command=lambda: plot_sir_model(
@@ -159,7 +212,11 @@ def main():
         tfinal_var.get(),
         sliders["h"].get(),
         method.get(),
-        canvas
+        canvas,
+        outbreak_label,
+        a1_label,
+        a2_label,
+        a3_label
     )).grid(row=8, column=0, columnspan=1, pady=20)
 
     # Close button
